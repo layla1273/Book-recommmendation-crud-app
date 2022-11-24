@@ -6,12 +6,10 @@ from flask import jsonify, request, abort
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 
-
 @app.route("/book/list", methods=["GET"])
 def get_books():
     books = Book.query.all()
     return jsonify([book.to_json() for book in books])
-
 
 @app.route("/book/<int:isbn>", methods=["GET"])
 def get_book(isbn):
@@ -19,7 +17,6 @@ def get_book(isbn):
     if book is None:
         abort(404)
     return jsonify(book.to_json())
-
 
 @app.route("/book/<int:isbn>", methods=["DELETE"])
 def delete_book(isbn):
@@ -29,7 +26,6 @@ def delete_book(isbn):
     db.session.delete(book)
     db.session.commit()
     return jsonify({'result': True})
-
 
 @app.route('/book', methods=['POST'])
 def create_book():
@@ -43,7 +39,6 @@ def create_book():
     db.session.add(book)
     db.session.commit()
     return jsonify(book.to_json()), 201
-
 
 @app.route('/book/<int:isbn>', methods=['PUT'])
 def update_book(isbn):
